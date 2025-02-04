@@ -304,7 +304,7 @@
     "which-typed-array": "^1.1.18",
     "word-wrap": "^1.2.5",
     "wrap-ansi": "^8.1.0",
-    "wrap-ansi-cjs": "^7.0.0",
+    "wrap-ansi-cjs": "^8.0.0",
     "yaml": "^2.7.0",
     "yocto-queue": "^0.1.0"
   },
