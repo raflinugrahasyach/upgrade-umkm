@@ -3,12 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Calendar, 
-  MapPin, 
-  Clock, 
+  MapPin,  
   Users, 
   ChevronRight, 
   Search,
-  Filter,
   ArrowRight
 } from 'lucide-react';
 import Navbar from '../../components/Navbar';

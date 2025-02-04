@@ -2,12 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  BookOpen, 
   Clock, 
-  User, 
-  ChevronRight, 
+  User,  
   Search,
-  Tag,
   Share2,
   Bookmark,
   ArrowRight,

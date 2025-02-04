@@ -46,3 +46,7 @@ coverage/
 eslint.cache
 postcss.config.mjs
 postcss.config.js
+.vercel
+
+# Local Netlify folder
+.netlify

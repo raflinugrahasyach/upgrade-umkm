@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  Rocket, ChevronRight, ArrowRight, Users, Target, 
-  TrendingUp, Star, ArrowDown, Quote, Lightbulb,
+  ChevronRight, ArrowRight, Users, Target, 
+  TrendingUp, ArrowDown, Quote, Lightbulb,
   LineChart, Globe, Video, Network, BookOpen
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
