@@ -7,7 +7,7 @@ import Chatbot from "../../../components/Chatbot";
 import dynamic from "next/dynamic";
 
 // Gunakan dynamic import untuk react-plotly.js agar tidak dirender di server
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }) as any;
 
 import { Rocket, BarChart3, MessageSquare, MessageCircle } from "lucide-react";
 import {
