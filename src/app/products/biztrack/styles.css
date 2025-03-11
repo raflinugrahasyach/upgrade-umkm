@@ -1,0 +1,182 @@
+/* src/app/products/biztrack/styles.css */
+
+/* Layout & Container */
+.biztrack-container {
+    @apply min-h-screen bg-gradient-to-b from-gray-900 to-black text-gray-100;
+  }
+  
+  .biztrack-content {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+  }
+  
+  /* Header Styles */
+  .biztrack-header {
+    @apply flex items-center gap-3 mb-6;
+  }
+  
+  .biztrack-title {
+    @apply bg-gradient-to-r from-[#FF6B2C] via-[#FF4785] to-purple-500 bg-clip-text text-transparent;
+  }
+  
+  .biztrack-badge {
+    @apply inline-flex items-center px-4 py-1.5 rounded-full bg-gradient-to-r 
+           from-orange-500/10 to-pink-500/10 border border-orange-500/20;
+  }
+  
+  /* Card Styles */
+  .biztrack-card {
+    @apply bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 
+           hover:border-orange-500/30 transition-all;
+  }
+  
+  .biztrack-card-hover {
+    @apply hover:shadow-[0_0_20px_rgba(255,107,44,0.1)];
+  }
+  
+  /* Upload Area */
+  .biztrack-upload {
+    @apply relative p-8 border-2 border-dashed border-gray-700 rounded-xl bg-gray-900/50 
+           hover:border-orange-500/50 transition-all text-center cursor-pointer;
+  }
+  
+  .biztrack-upload-icon {
+    @apply w-16 h-16 mx-auto mb-4 text-orange-500 opacity-80;
+  }
+  
+  /* Form Elements */
+  .biztrack-select {
+    @apply w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-gray-300 
+           focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all;
+  }
+  
+  .biztrack-input {
+    @apply w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-300 
+           focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all;
+  }
+  
+  /* Button Styles */
+  .biztrack-btn {
+    @apply px-6 py-2 rounded-lg font-medium transition-all duration-300;
+  }
+  
+  .biztrack-btn-primary {
+    @apply biztrack-btn bg-gradient-to-r from-[#FF6B2C] to-[#FF4785] text-white 
+           hover:opacity-90;
+  }
+  
+  .biztrack-btn-secondary {
+    @apply biztrack-btn bg-gray-800 text-gray-300 hover:bg-gray-700;
+  }
+  
+  /* Table Styles */
+  .biztrack-table {
+    @apply w-full border-collapse;
+  }
+  
+  .biztrack-table th {
+    @apply px-4 py-3 text-left text-sm font-medium text-gray-400 border-b border-gray-800 
+           bg-gray-900/80;
+  }
+  
+  .biztrack-table td {
+    @apply px-4 py-3 text-sm text-gray-300 border-b border-gray-800;
+  }
+  
+  .biztrack-table tr:hover {
+    @apply bg-gray-900/50;
+  }
+  
+  /* Chart Container */
+  .biztrack-chart {
+    @apply bg-gray-900/30 backdrop-blur-sm rounded-xl border border-gray-800 p-6 my-8 
+           hover:border-orange-500/30 transition-all;
+  }
+  
+  /* Interpretation Box */
+  .biztrack-interpretation {
+    @apply mt-8 p-6 rounded-xl bg-gradient-to-r from-orange-500/10 to-pink-500/10 
+           border border-orange-500/20;
+  }
+  
+  /* Navigation */
+  .biztrack-nav-btn {
+    @apply w-full px-6 py-3 rounded-lg font-medium text-base transition-all duration-300 
+           flex items-center justify-center gap-2;
+  }
+  
+  .biztrack-nav-btn-active {
+    @apply bg-gradient-to-r from-[#FF6B2C] to-[#FF4785] text-white;
+  }
+  
+  .biztrack-nav-btn-inactive {
+    @apply bg-gray-900 text-gray-400 hover:bg-gray-800 border border-gray-800;
+  }
+  
+  /* Helper Classes */
+  .biztrack-gradient-text {
+    @apply bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent;
+  }
+  
+  .biztrack-blur-backdrop {
+    @apply backdrop-blur-md bg-black/30;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .biztrack-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Custom Scrollbar */
+  .biztrack-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,107,44,0.3) rgba(17,24,39,0.3);
+  }
+  
+  .biztrack-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .biztrack-scroll::-webkit-scrollbar-track {
+    background: rgba(17,24,39,0.3);
+    border-radius: 3px;
+  }
+  
+  .biztrack-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(255,107,44,0.3);
+    border-radius: 3px;
+  }
+
+/* WhatsApp Button Styling - Based on Screenshot */
+.biztrack-wa-button {
+  @apply flex items-center w-full rounded-lg overflow-hidden transition-all duration-300 mb-4
+         bg-gray-900 border-l-4 border-green-500;
+}
+
+.biztrack-wa-icon-container {
+  @apply bg-green-500 p-3 flex items-center justify-center;
+}
+
+.biztrack-wa-icon {
+  @apply w-5 h-5 text-white;
+}
+
+.biztrack-wa-content {
+  @apply flex flex-col py-2 px-3;
+}
+
+.biztrack-wa-title {
+  @apply text-white font-medium text-sm;
+}
+
+.biztrack-wa-text {
+  @apply text-green-400 text-xs;
+}
+
+.biztrack-wa-button:hover {
+  @apply border-green-400;
+}
