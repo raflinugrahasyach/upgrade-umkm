@@ -4,7 +4,11 @@ import { useState, useEffect } from "react";
 import FileUploader from "../../../components/FileUploader";
 import DataTable from "../../../components/DataTable";
 import Chatbot from "../../../components/Chatbot";
-import Plot from "react-plotly.js";
+import dynamic from "next/dynamic";
+
+// Gunakan dynamic import untuk react-plotly.js agar tidak dirender di server
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+
 import { Rocket, BarChart3, MessageSquare, MessageCircle } from "lucide-react";
 import {
   visualizePelanggan,
@@ -130,9 +134,7 @@ export default function Page() {
             <Rocket className="w-4 h-4 mr-2 text-orange-500" />
             <span className="text-sm text-orange-500">Analisis Bisnis AI</span>
           </div>
-          <h1 className="biztrack-title">
-            Pantau Kinerja Bisnis Kamu!
-          </h1>
+          <h1 className="biztrack-title">Pantau Kinerja Bisnis Kamu!</h1>
           <p className="biztrack-subtitle">
             Dapatkan informasi dan rekomendasi bisnis berbasis AI dengan mudah. Transformasi digital untuk UMKM Indonesia.
           </p>
@@ -144,25 +146,18 @@ export default function Page() {
           <div className="lg:col-span-3">
             <div className="biztrack-card biztrack-card-hover sticky top-8">
               <div className="space-y-6">
-                {/* Upload Section */}
+                {/* Upload Section dengan WhatsApp di antara judul dan area unggah */}
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Rocket className="w-5 h-5 text-orange-500" />
                     Unggah Data
                   </h3>
-                  
-                  
-                  {/* Upload Area */}
-                  <div className="biztrack-upload">
-                    <FileUploader onFileUpload={handleFileUpload} />
-                  </div>
-                  
-                  {/* WhatsApp Contact Link - REPOSITIONED ABOVE UPLOAD */}
-                  <a 
-                    href="https://wa.me/6289505670305?text=Halo%20admin%20Upgrade%20UMKM%20%F0%9F%98%8A%20mau%20konsultasi%20Analisis%20Bisnis%20berbasis%20Artificial%20Intelligence%20untuk%20pantau%20kinerja%20bisnis%20saya%20dong" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="biztrack-wa-button mb-4"
+                  {/* WhatsApp Contact Link */}
+                  <a
+                    href="https://wa.me/6289505670305?text=Halo%20admin%20Upgrade%20UMKM%20%F0%9F%98%8A%20mau%20konsultasi%20Analisis%20Bisnis%20berbasis%20Artificial%20Intelligence%20untuk%20pantau%20kinerja%20bisnis%20saya%20dong"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="biztrack-wa-button mb-4 block"
                   >
                     <div className="biztrack-wa-icon-container">
                       <MessageCircle className="biztrack-wa-icon" />
@@ -174,8 +169,10 @@ export default function Page() {
                       </span>
                     </div>
                   </a>
-                  
-                  
+                  {/* Upload Area */}
+                  <div className="biztrack-upload">
+                    <FileUploader onFileUpload={handleFileUpload} />
+                  </div>
                 </div>
 
                 {/* Navigation */}
