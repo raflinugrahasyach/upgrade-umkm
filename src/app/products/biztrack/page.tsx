@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import FileUploader from "../../../components/FileUploader";
-import DataTable from "../../../components/DataTable";
-import Chatbot from "../../../components/Chatbot";
+import FileUploader from "@/lib/components/FileUploader";
+import DataTable from "@/lib/components/DataTable";
+import Chatbot from "/lib/components/Chatbot";
 import dynamic from "next/dynamic";
 
 // Gunakan dynamic import untuk react-plotly.js agar tidak dirender di server
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }) as any;
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 import { Rocket, BarChart3, MessageSquare, MessageCircle } from "lucide-react";
 import {
@@ -21,8 +21,9 @@ import {
   visualizeFeedbackPengembalian,
   visualizeAnalisisPenjualan,
   visualizeLainnya,
-} from "../../../app/lib/services/visualize";
+} from "@/lib/services/visualize";
 import "./styles.css";
+
 
 const businessOptions: Record<string, string[]> = {
   Pelanggan: [
