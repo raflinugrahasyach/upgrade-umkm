@@ -33,14 +33,25 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        router.push("/login");
-      } else {
-        setSessionChecking(false);
-        fetchItems(activeTab);
-      }
-    };
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+            router.push("/login");
+        } else {
+            // SECURITY CHECK: Cek email admin
+            const adminEmails = ["admin@upgradeumkm.id", "rafli@upgradeumkm.id"]; // Daftar email admin
+            // Atau cek domain perusahaan
+            const isCompanyEmail = session.user.email?.endsWith("@upgradeumkm.id");
+
+            if (!adminEmails.includes(session.user.email!) && !isCompanyEmail) {
+            alert("Anda tidak memiliki akses ke halaman Admin!");
+            router.push("/"); // Tendang user biasa ke Home
+            return;
+            }
+
+            setSessionChecking(false);
+            fetchItems(activeTab);
+        }
+        };
     checkSession();
   }, [router, activeTab]);
 
