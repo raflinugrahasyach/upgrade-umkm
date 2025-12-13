@@ -1,6 +1,6 @@
 // src/app/lib/services/visualize.ts
 
-import { getInterpretation } from "./interpretation";
+import { getInterpretation } from "./gemini";
 
 export interface ChartResult {
   type: string;

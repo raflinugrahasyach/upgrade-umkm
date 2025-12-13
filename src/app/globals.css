@@ -19,3 +19,16 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* src/styles/globals.css */
+
+.admin-input {
+  @apply w-full bg-zinc-800/50 border border-zinc-700 rounded-xl p-4 text-white focus:outline-none focus:border-orange-500 transition-colors placeholder:text-zinc-600;
+}
+
+.sidebar-btn { 
+  @apply w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-zinc-400 hover:bg-zinc-800; 
+}
+.sidebar-btn.active { 
+  @apply bg-orange-500/10 text-orange-400 border border-orange-500/20; 
+}

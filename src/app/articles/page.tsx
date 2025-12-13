@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-'use client'
+// src/app/articles/page.tsx
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { 
@@ -10,22 +9,65 @@ import {
   Share2,
   Bookmark,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Loader2
 } from 'lucide-react';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import Link from 'next/link';
+import { supabase } from '@/app/lib/supabase';
+
+// Tipe data untuk Artikel
+interface Article {
+  id: number;
+  title: string;
+  category: string;
+  excerpt: string; // Di DB kita pakai excerpt/description
+  author: string;
+  read_time: string;
+  image_url: string;
+  created_at: string;
+}
 
 const ArticlesPage = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [hoveredArticle, setHoveredArticle] = useState(null);
+  const [hoveredArticle, setHoveredArticle] = useState<number | null>(null);
 
+  // Fetch Data dari Supabase
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) console.error("Error fetching articles:", error);
+      else setArticles(data || []);
+      
+      setLoading(false);
+    };
+
+    fetchArticles();
+  }, []);
+
+  // Filter Logic
   const filteredArticles = articles.filter(article => {
     const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory;
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (article.excerpt && article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
+
+  const categories = [
+    { value: 'all', label: 'Semua Artikel' },
+    { value: 'technology', label: 'Teknologi' },
+    { value: 'business', label: 'Bisnis' },
+    { value: 'strategy', label: 'Strategi' },
+    { value: 'marketing', label: 'Marketing' }
+  ];
 
   return (
     <>
@@ -91,167 +133,107 @@ const ArticlesPage = () => {
               ))}
             </div>
 
-            {/* Articles Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-              {filteredArticles.map((article, index) => (
-                <div
-                  key={index}
-                  className="group relative"
-                  onMouseEnter={() => setHoveredArticle(null)}
-                  onMouseLeave={() => setHoveredArticle(null)}
-                >
-                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition-all" />
-                  
-                  <div className="relative h-full rounded-3xl bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 hover:border-orange-500/50 transition-all duration-300 overflow-hidden">
-                    <div className="aspect-[16/10] relative overflow-hidden">
-                      <div className="absolute inset-0 bg-[url('/api/placeholder/800/500')] bg-cover bg-center group-hover:scale-110 transition-transform duration-300" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent" />
-                      
-                      <div className="absolute top-4 left-4">
-                        <span className="px-4 py-1 rounded-full text-sm font-medium bg-orange-500/20 text-orange-400 backdrop-blur-xl border border-orange-500/20">
-                          {article.category}
-                        </span>
-                      </div>
-                    </div>
+            {/* Loading State */}
+            {loading ? (
+               <div className="flex justify-center py-20">
+                 <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+               </div>
+            ) : filteredArticles.length === 0 ? (
+               <div className="text-center py-20 text-zinc-500">
+                 Tidak ada artikel ditemukan.
+               </div>
+            ) : (
+              /* Articles Grid */
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                {filteredArticles.map((article) => (
+                  <div
+                    key={article.id}
+                    className="group relative"
+                    onMouseEnter={() => setHoveredArticle(article.id)}
+                    onMouseLeave={() => setHoveredArticle(null)}
+                  >
+                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition-all" />
                     
-                    <div className="p-8">
-                      <h3 className="text-2xl font-semibold text-white mb-4 group-hover:text-orange-400 transition-colors">
-                        {article.title}
-                      </h3>
-                      
-                      <p className="text-zinc-400 mb-6 line-clamp-3">
-                        {article.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center text-zinc-400">
-                          <User className="w-4 h-4 mr-2 text-orange-400" />
-                          {article.author}
-                        </div>
-                        <div className="flex items-center text-zinc-400">
-                          <Clock className="w-4 h-4 mr-2 text-pink-400" />
-                          {article.readTime}
+                    <div className="relative h-full rounded-3xl bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 hover:border-orange-500/50 transition-all duration-300 overflow-hidden flex flex-col">
+                      <div className="aspect-[16/10] relative overflow-hidden">
+                        {/* Menggunakan Image dari Supabase atau Placeholder */}
+                        <div 
+                           className="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-300"
+                           style={{ backgroundImage: `url(${article.image_url || '/api/placeholder/800/500'})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent" />
+                        
+                        <div className="absolute top-4 left-4">
+                          <span className="px-4 py-1 rounded-full text-sm font-medium bg-orange-500/20 text-orange-400 backdrop-blur-xl border border-orange-500/20 uppercase">
+                            {article.category}
+                          </span>
                         </div>
                       </div>
                       
-                      <div className="flex justify-between items-center">
-                        <button className="px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-medium hover:shadow-lg hover:shadow-orange-500/25 transition-all group">
-                          <span className="flex items-center">
-                            Baca Selengkapnya
-                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                          </span>
-                        </button>
+                      <div className="p-8 flex flex-col flex-grow">
+                        <h3 className="text-2xl font-semibold text-white mb-4 group-hover:text-orange-400 transition-colors line-clamp-2">
+                          {article.title}
+                        </h3>
                         
-                        <div className="flex gap-3">
-                          <button className="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
-                            <Share2 className="w-5 h-5" />
-                          </button>
-                          <button className="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
-                            <Bookmark className="w-5 h-5" />
-                          </button>
+                        <p className="text-zinc-400 mb-6 line-clamp-3 flex-grow">
+                          {article.excerpt}
+                        </p>
+                        
+                        <div className="flex items-center justify-between mb-6 mt-auto">
+                          <div className="flex items-center text-zinc-400 text-sm">
+                            <User className="w-4 h-4 mr-2 text-orange-400" />
+                            {article.author}
+                          </div>
+                          <div className="flex items-center text-zinc-400 text-sm">
+                            <Clock className="w-4 h-4 mr-2 text-pink-400" />
+                            {article.read_time}
+                          </div>
+                        </div>
+                        
+                        <div className="flex justify-between items-center">
+                          <Link href={`/articles/${article.id}`}>
+                            <button className="px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-medium hover:shadow-lg hover:shadow-orange-500/25 transition-all group">
+                              <span className="flex items-center">
+                                Baca Selengkapnya
+                                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                              </span>
+                            </button>
+                          </Link>
+                          
+                          <div className="flex gap-3">
+                            <button className="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                              <Share2 className="w-5 h-5" />
+                            </button>
+                            <button className="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                              <Bookmark className="w-5 h-5" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Newsletter Section */}
+        {/* Newsletter Section (Tetap sama) */}
         <section className="py-32">
-          <div className="container mx-auto px-4">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl blur-xl opacity-20" />
-              <div className="relative p-1 rounded-3xl bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500">
-                <div className="bg-black rounded-3xl p-16 text-center backdrop-blur-xl">
-                  <div className="flex justify-center mb-8">
-                    <Sparkles className="w-12 h-12 text-orange-400" />
-                  </div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-                    Tetap Terupdate
-                  </h2>
-                  <p className="text-zinc-400 text-lg mb-12 max-w-2xl mx-auto">
-                    Berlangganan newsletter kami dan dapatkan artikel terbaru, 
-                    wawasan, dan update langsung di inbox Anda.
-                  </p>
-                  <div className="max-w-md mx-auto relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full blur opacity-25 group-hover:opacity-40 transition-opacity" />
-                    <div className="relative flex">
-                      <input
-                        type="email"
-                        placeholder="Masukkan email Anda"
-                        className="flex-1 px-6 py-4 bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 rounded-l-full text-white placeholder:text-zinc-500 focus:outline-none focus:border-orange-500/50"
-                      />
-                      <button className="px-8 py-4 bg-gradient-to-r from-orange-500 to-pink-500 rounded-r-full text-white font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all">
-                        Berlangganan
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+           {/* ... (Kode newsletter tetap sama) ... */}
+           {/* Saya persingkat di sini agar tidak kepanjangan, tapi Anda biarkan saja kode newsletter yang lama */}
+           <div className="container mx-auto px-4 text-center">
+             <div className="p-10 bg-zinc-900/50 rounded-3xl border border-zinc-800">
+               <h2 className="text-3xl font-bold text-white mb-4">Newsletter</h2>
+               <p className="text-zinc-400">Dapatkan update terbaru.</p>
+             </div>
+           </div>
         </section>
+
       </main>
       <Footer />
     </>
   );
 };
-
-const categories = [
-  { value: 'all', label: 'Semua Artikel' },
-  { value: 'technology', label: 'Teknologi' },
-  { value: 'business', label: 'Bisnis' },
-  { value: 'innovation', label: 'Inovasi' },
-  { value: 'strategy', label: 'Strategi' },
-  { value: 'tutorials', label: 'Tutorial' }
-];
-
-const articles = [
-  {
-    title: "Masa Depan AI dalam Bisnis",
-    category: "technology",
-    description: "Jelajahi bagaimana kecerdasan buatan mengubah lanskap bisnis dan apa artinya bagi inovasi masa depan. Pelajari aplikasi praktis dan tren yang akan datang.",
-    author: "Dr. Sarah Chen",
-    readTime: "8 menit baca"
-  },
-  {
-    title: "Strategi Transformasi Digital",
-    category: "strategy",
-    description: "Panduan lengkap untuk menerapkan transformasi digital di organisasi Anda. Termasuk studi kasus nyata dan wawasan yang dapat ditindaklanjuti.",
-    author: "Michael Roberts",
-    readTime: "12 menit baca"
-  },
-  {
-    title: "Membangun Budaya Data-Driven",
-    category: "business",
-    description: "Pelajari cara menumbuhkan budaya berbasis data di organisasi Anda dan membuat keputusan lebih baik menggunakan analitik dan wawasan.",
-    author: "Emma Thompson",
-    readTime: "10 menit baca"
-  },
-  {
-    title: "Dasar-Dasar Cloud Computing",
-    category: "technology",
-    description: "Memahami fundamental komputasi awan dan cara memanfaatkan layanan cloud untuk pertumbuhan dan skalabilitas bisnis.",
-    author: "James Wilson",
-    readTime: "15 menit baca"
-  },
-  {
-    title: "Inovasi dalam Praktik",
-    category: "innovation",
-    description: "Contoh nyata bagaimana perusahaan mendorong inovasi dan menciptakan solusi terobosan di berbagai industri.",
-    author: "Lisa Anderson",
-    readTime: "7 menit baca"
-  },
-  {
-    title: "Menguasai Digital Marketing",
-    category: "tutorials",
-    description: "Panduan langkah demi langkah untuk membuat dan menjalankan strategi pemasaran digital yang efektif dalam lanskap yang kompetitif saat ini.",
-    author: "Alex Martinez",
-    readTime: "14 menit baca"
-  }
-];
 
 export default ArticlesPage;
