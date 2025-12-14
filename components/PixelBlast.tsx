@@ -145,7 +145,7 @@ const createLiquidEffect = (texture: THREE.Texture, opts?: LiquidEffectOptions):
     }
     `
   return new Effect("LiquidEffect", fragment, {
-    uniforms: new Map([
+    uniforms: new Map<string, THREE.Uniform<THREE.Texture | number>>([
       ["uTexture", new THREE.Uniform(texture)],
       ["uStrength", new THREE.Uniform(opts?.strength ?? 0.025)],
       ["uTime", new THREE.Uniform(0)],
