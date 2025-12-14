@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client"; // Import baru
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, Mail, Lock, User, ArrowRight, CheckCircle2 } from "lucide-react";
@@ -13,7 +13,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const supabase = createClient(); // Inisialisasi baru
+  const supabase = createClient();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +21,6 @@ export default function Register() {
     setError(null);
 
     try {
-      // Pastikan URL redirect sesuai domain Anda
       const redirectUrl = `${window.location.origin}/auth/callback`;
       
       const { error } = await supabase.auth.signUp({
@@ -29,7 +28,7 @@ export default function Register() {
         password,
         options: {
           data: { full_name: fullName },
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: redirectUrl, // <-- Ini kuncinya
         },
       });
 
@@ -62,10 +61,17 @@ export default function Register() {
       {/* FORM SECTION */}
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24 bg-white">
         <div className="mx-auto w-full max-w-sm lg:w-96">
-          <Link href="/" className="flex items-center gap-2 mb-10 group w-fit">
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg flex items-center justify-center text-white font-bold shadow-md">U</div>
-            <span className="font-bold text-lg text-zinc-900">UpgradeUMKM</span>
+          
+          {/* --- BAGIAN LOGO DIPERBARUI --- */}
+          <Link href="/" className="flex items-center gap-3 mb-10 group w-fit">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center shadow-md p-2 group-hover:rotate-6 transition-transform">
+                {/* Ganti huruf U dengan Gambar */}
+                <img src="/logo_uumkm.png" alt="Logo" className="w-full h-full object-contain"/>
+            </div>
+            <span className="font-bold text-xl text-zinc-900">UpgradeUMKM</span>
           </Link>
+          {/* ----------------------------- */}
+
           <h2 className="text-3xl font-extrabold text-zinc-900 mb-2">Buat Akun Baru</h2>
           <form onSubmit={handleRegister} className="space-y-5 mt-8">
             {error && <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-200">{error}</div>}

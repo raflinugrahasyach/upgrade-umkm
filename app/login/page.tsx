@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client"; // Import dari file baru kita
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
@@ -12,7 +12,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createClient(); // Inisialisasi baru
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,9 +40,16 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] p-4">
       <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-zinc-100 max-w-md w-full">
         <div className="text-center mb-8">
-            <Link href="/" className="inline-block mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg mx-auto">U</div>
+            
+            {/* --- BAGIAN LOGO DIPERBARUI --- */}
+            <Link href="/" className="inline-block mb-6 group">
+                <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg mx-auto p-3 group-hover:rotate-6 transition-transform">
+                    {/* Ganti huruf U dengan Gambar */}
+                    <img src="/logo_uumkm.png" alt="Logo" className="w-full h-full object-contain"/>
+                </div>
             </Link>
+            {/* ----------------------------- */}
+
             <h2 className="text-2xl font-extrabold text-zinc-900">Selamat Datang Kembali!</h2>
             <p className="text-zinc-500 text-sm mt-2">Masuk untuk mengelola bisnis Anda.</p>
         </div>

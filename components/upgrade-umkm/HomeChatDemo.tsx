@@ -9,7 +9,7 @@ interface ChatMessage {
   text: string;
 }
 
-// Helper untuk mengubah format **tebal** menjadi <strong>tebal</strong>
+// Helper Format Text
 const formatText = (text: string) => {
   const parts = text.split(/(\*\*.*?\*\*)/g);
   return parts.map((part, index) => {
@@ -21,30 +21,33 @@ const formatText = (text: string) => {
 };
 
 export default function HomeChatDemo() {
-  // 1. Pesan Pembuka (Lebih Bersih Tanpa Contoh)
   const [messages, setMessages] = useState<ChatMessage[]>([
     { 
       role: "model", 
-      text: "Halo! 👋 Saya **Smart Assistant Upgrade UMKM**.\n\nSaya siap menjadi mitra diskusi strategi bisnis Anda. Supaya sarannya lebih spesifik dan pas sasaran, boleh tahu **siapa nama Anda** dan **bisnis apa yang sedang dijalankan**?" 
+      text: "Halo! 👋 Saya **Smart Assistant Upgrade UMKM**.\n\nSaya siap menjadi mitra diskusi strategi bisnis Anda. Supaya sarannya lebih spesifik, boleh tahu **siapa nama Anda** dan **bisnis apa yang sedang dijalankan**?" 
     }
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  
-  // State untuk menyimpan konteks user (Nama & Bisnis)
   const [userData, setUserData] = useState<{ name: string; business: string } | null>(null);
-
   const [showScrollButton, setShowScrollButton] = useState(false);
+  
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const bottomSpacerRef = useRef<HTMLDivElement>(null);
+  // Spacer ref sudah tidak dipakai untuk target scroll, tapi tetap ada untuk layout
 
-  // --- SCROLL LOGIC ---
+  // --- SCROLL LOGIC (FIXED) ---
+  // Perbaikan: Menggunakan container.scrollTo() agar halaman utama TIDAK ikut turun
   const scrollToBottom = (force = false) => {
-    if (!chatContainerRef.current || !bottomSpacerRef.current) return;
+    if (!chatContainerRef.current) return;
+
     const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
     const isNearBottom = scrollHeight - scrollTop - clientHeight < 200;
+
     if (force || isNearBottom) {
-        bottomSpacerRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        chatContainerRef.current.scrollTo({
+            top: scrollHeight,
+            behavior: "smooth"
+        });
     } else {
         setShowScrollButton(true);
     }
@@ -58,73 +61,55 @@ export default function HomeChatDemo() {
     }
   };
 
-  useLayoutEffect(() => {
+  // Gunakan useEffect biasa agar tidak memblokir painting awal browser
+  useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     const isUser = lastMessage?.role === 'user';
-    scrollToBottom(isUser);
+    
+    // Delay sedikit agar DOM render sempurna dulu baru scroll internal chatnya
+    const timer = setTimeout(() => {
+        scrollToBottom(isUser);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [messages, isTyping]);
 
-  // --- AI LOGIC (CONTEXT AWARE & LEBIH PINTAR) ---
+  // --- AI LOGIC ---
   const generateResponse = (question: string) => {
     const q = question.toLowerCase().trim();
     const words = question.split(" ");
+    const greetings = ["hai", "halo", "hi", "hello", "pagi", "siang", "sore", "malam", "tes", "cek"];
 
-    // LIST KATA SAPAAN (Untuk mencegah "Hai" dianggap nama bisnis)
-    const greetings = ["hai", "halo", "hi", "hello", "pagi", "siang", "sore", "malam", "tes", "cek", "assalamualaikum", "permisi"];
-
-    // 1. Fase Perkenalan (Jika data user belum ada)
     if (!userData) {
-        // CEK 1: Apakah user cuma menyapa?
         if (greetings.includes(q) || (words.length <= 2 && greetings.some(g => q.includes(g)))) {
             return "Halo! 👋 Senang bertemu Anda. \n\nBiar enak ngobrolnya, boleh kenalan dulu? Siapa nama Anda dan bisnis apa yang sedang digeluti?";
         }
-
-        // CEK 2: Deteksi "Belum punya bisnis"
         if (q.includes("belum") || q.includes("tidak") || q.includes("ga ada") || q.includes("rencana")) {
-            // Ambil nama dari kata pertama/kedua (Logika sederhana)
-            const name = words[0].toLowerCase() === "saya" || words[0].toLowerCase() === "aku" ? (words[1] || "Kak") : words[0];
-            const cleanName = name.charAt(0).toUpperCase() + name.slice(1); // Capitalize
-
+            const name = words[0].toLowerCase() === "saya" ? (words[1] || "Kak") : words[0];
+            const cleanName = name.charAt(0).toUpperCase() + name.slice(1);
             setUserData({ name: cleanName, business: "Rencana Bisnis" });
-            return `Salam kenal, **${cleanName}**! 👋\n\nBelum punya bisnis ya? Tidak masalah! Justru ini saat yang tepat untuk merancang fondasi yang kuat.\n\nKira-kira, ide bisnis apa yang sedang kamu pikirkan? Atau mau minta saran ide yang lagi tren?`;
+            return `Salam kenal, **${cleanName}**! 👋\n\nBelum punya bisnis ya? Tidak masalah! Justru ini saat yang tepat untuk merancang fondasi.\n\nKira-kira, ide bisnis apa yang sedang kamu pikirkan?`;
         } 
-        
-        // CEK 3: Asumsi user menjawab dengan Nama & Bisnis
         else {
-            // Logika ekstraksi nama sederhana (Mengambil kata setelah "saya" atau kata pertama)
             let name = words[0];
             if (words[0].toLowerCase() === "nama" && words[1].toLowerCase() === "saya") name = words[2];
             else if (words[0].toLowerCase() === "saya") name = words[1];
-            
             const cleanName = name ? name.charAt(0).toUpperCase() + name.slice(1) : "Kak";
-
             setUserData({ name: cleanName, business: "Owner" });
-            return `Halo **${cleanName}**! Wah, mantap nih bisnisnya. 🚀\n\nSebagai sesama pegiat UMKM, biasanya tantangannya nggak jauh-jauh dari **penjualan**, **stok**, atau **modal**. \n\nKira-kira mana yang paling bikin kamu pusing sekarang?`;
+            return `Halo **${cleanName}**! Wah, mantap nih bisnisnya. 🚀\n\nBiasanya tantangan UMKM nggak jauh dari **penjualan**, **stok**, atau **modal**. \n\nKira-kira mana yang paling bikin kamu pusing sekarang?`;
         }
     }
 
-    // 2. Fase Konsultasi (Data user sudah ada)
     const userName = userData.name;
-
-    // --- Handling Kata Kasar ---
     const badWords = ["jancok", "asu", "anjing", "goblok", "tolol", "bego", "bangsat"];
     if (badWords.some(word => q.includes(word))) return `Waduh **${userName}**, bahasanya dijaga dong. 😅\n\nYuk fokus lagi ke cuan. Ada masalah bisnis apa yang bisa saya bantu?`;
-
-    // --- Handling Sapaan di tengah chat ---
+    
     if (greetings.includes(q)) return `Halo lagi **${userName}**! Ada yang ingin ditanyakan soal bisnisnya?`;
 
-    // --- Topik Bisnis ---
-    if (q.includes("omzet") || q.includes("jual") || q.includes("sepi") || q.includes("laku")) {
-        return `💡 **Strategi Omzet untuk ${userName}:**\n\nKalau lagi sepi, coba strategi **'Loss Leader'**. Jual 1 produk populer dengan harga modal buat mancing trafik, terus tawarin produk lain yang untungnya gede.\n\nOiya, udah coba promosi di TikTok belum?`;
-    }
-    if (q.includes("modal") || q.includes("uang") || q.includes("dana")) {
-        return `💰 **Tips Modal:**\n\n${userName}, inget prinsip #1: **Pisahkan Rekening Pribadi & Bisnis**. Jangan dicampur buat beli bakso ya! 😂\n\nCatat semua uang masuk keluar. Kalau catatannya rapi, nanti gampang kalau mau ajuin KUR ke bank.`;
-    }
-    if (q.includes("ide") || q.includes("saran") || q.includes("bingung")) {
-        return `🤔 **Saran Saya:**\n\nCoba riset kecil-kecilan dulu, ${userName}. Cari apa yang lagi banyak dicari orang di Google Trends atau TikTok tapi penjualnya masih dikit.\n\nFokus ke **solusi**. Orang beli bukan karena produk bagus, tapi karena produk itu nyelesain masalah mereka.`;
-    }
+    if (q.includes("omzet") || q.includes("jual") || q.includes("sepi")) return `💡 **Strategi Omzet untuk ${userName}:**\n\nCoba strategi **'Loss Leader'**. Jual 1 produk populer harga modal buat mancing trafik, terus tawarin produk lain yang untungnya gede.`;
+    if (q.includes("modal") || q.includes("uang") || q.includes("dana")) return `💰 **Tips Modal:**\n\n${userName}, prinsip #1: **Pisahkan Rekening Pribadi & Bisnis**. Jangan dicampur buat beli bakso ya! 😂 Catat semua arus kas agar mudah ajuin KUR.`;
+    if (q.includes("ide") || q.includes("saran") || q.includes("bingung")) return `🤔 **Saran Saya:**\n\nCoba riset kecil-kecilan, ${userName}. Cari apa yang lagi trending di Google/TikTok tapi penjualnya masih dikit. Fokus ke solusi masalah orang.`;
 
-    // --- Fallback ---
     return `Menarik nih pertanyaannya. Tapi biar jawabannya pas, coba lebih spesifik lagi dong, ${userName}.\n\nMisalnya: "Gimana cara bikin konten viral?" atau "Cara atur gaji karyawan?".`;
   };
 
@@ -141,7 +126,6 @@ export default function HomeChatDemo() {
     }, delay);
   };
 
-  // Chips berubah tergantung sudah kenalan atau belum
   const suggestedQuestions = !userData ? [
     "Saya Rafli, bisnis kaos",
     "Putri, jualan kuliner",
@@ -209,7 +193,6 @@ export default function HomeChatDemo() {
                                     {msg.role === 'user' ? <User className="w-5 h-5"/> : <Bot className="w-6 h-6"/>}
                                 </div>
                                 <div className={`px-5 py-4 rounded-2xl text-[15px] leading-relaxed max-w-[85%] sm:max-w-[75%] shadow-sm whitespace-pre-wrap ${msg.role === 'user' ? 'bg-zinc-900 text-white rounded-tr-sm' : 'bg-white text-zinc-700 border border-zinc-200 rounded-tl-sm'}`}>
-                                    {/* Format Text Helper Digunakan Disini */}
                                     {formatText(msg.text)}
                                 </div>
                             </motion.div>
@@ -224,7 +207,8 @@ export default function HomeChatDemo() {
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    <div ref={bottomSpacerRef} className="h-44 w-full bg-transparent shrink-0" />
+                    {/* Spacer agar chat terakhir tidak tertutup input */}
+                    <div className="h-44 w-full bg-transparent shrink-0" />
                 </div>
             </div>
 

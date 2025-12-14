@@ -84,8 +84,12 @@ export default function NavbarUMKM() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="p-2 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-xl group-hover:rotate-12 transition-transform shadow-lg shadow-orange-500/20">
-            <Rocket className="w-5 h-5 text-white" />
+          <div className="p-1.5 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-xl group-hover:rotate-12 transition-transform shadow-lg shadow-orange-500/20">
+            <img 
+              src="/logo_uumkm.png" 
+              alt="Logo UpgradeUMKM" 
+              className="w-6 h-6 object-contain" // Ukuran disesuaikan agar pas di kotak
+            />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
             UpgradeUMKM
