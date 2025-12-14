@@ -48,7 +48,10 @@ const testimonials = [
   },
 ]
 
-export function TestimonialsUMKM() {
+export default function TestimonialsUMKM() {
+  // 1. KITA BUAT SALINAN DATA YANG DIBALIK AGAR DATA ASLI AMAN
+  const reversedTestimonials = [...testimonials].reverse();
+
   return (
     <section className="py-20 lg:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,25 +80,22 @@ export function TestimonialsUMKM() {
         
         {/* First Row - Left to Right */}
         <div className="flex gap-6 animate-marquee mb-6">
+          {/* Kita gandakan array biar loopingnya mulus (infinite effect) */}
           {[...testimonials, ...testimonials].map((testimonial, index) => (
             <div 
-              key={index}
+              key={`row1-${index}`} // Key harus unik
               className="flex-shrink-0 w-[350px] bg-gradient-to-br from-[#FBC904]/5 to-[#F97316]/5 rounded-3xl p-6 border border-[#FBC904]/20"
             >
-              {/* Quote Icon */}
               <Quote className="w-8 h-8 text-[#FBC904] mb-4" />
               
-              {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-[#FBC904] text-[#FBC904]" />
                 ))}
               </div>
               
-              {/* Text */}
               <p className="text-[#18181B]/80 mb-6 leading-relaxed">"{testimonial.text}"</p>
               
-              {/* Author */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-[#18181B] font-bold text-sm">
                   {testimonial.name.charAt(0)}
@@ -110,26 +110,24 @@ export function TestimonialsUMKM() {
         </div>
 
         {/* Second Row - Right to Left */}
+        {/* Perhatikan style animation reverse di sini */}
         <div className="flex gap-6" style={{ animation: "marquee 40s linear infinite reverse" }}>
-          {[...testimonials.reverse(), ...testimonials].map((testimonial, index) => (
+          {/* GUNAKAN reversedTestimonials YANG SUDAH KITA COPY DI ATAS */}
+          {[...reversedTestimonials, ...reversedTestimonials].map((testimonial, index) => (
             <div 
-              key={index}
+              key={`row2-${index}`} // Key harus unik
               className="flex-shrink-0 w-[350px] bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl p-6 border border-orange-100"
             >
-              {/* Quote Icon */}
               <Quote className="w-8 h-8 text-[#F97316] mb-4" />
               
-              {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-[#FBC904] text-[#FBC904]" />
                 ))}
               </div>
               
-              {/* Text */}
               <p className="text-[#18181B]/80 mb-6 leading-relaxed">"{testimonial.text}"</p>
               
-              {/* Author */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-[#18181B] font-bold text-sm">
                   {testimonial.name.charAt(0)}

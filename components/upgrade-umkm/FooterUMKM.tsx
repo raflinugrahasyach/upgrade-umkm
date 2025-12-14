@@ -1,122 +1,87 @@
-"use client"
+"use client";
 
-import { Rocket, Mail, Phone, MapPin, Instagram, Youtube, Linkedin } from "lucide-react"
-import Link from "next/link"
+import Link from "next/link";
+import { Rocket, Mail, MapPin, Phone, Instagram, Linkedin } from "lucide-react";
 
-const products = [
-  { name: "BizTrack Monitor", href: "#" },
-  { name: "BizGuide Pro", href: "#" },
-  { name: "SkillBoost Pro", href: "#" },
-  { name: "BizConnect Hub", href: "#" },
-  { name: "BizLive Insight", href: "#" },
-]
-
-const company = [
-  { name: "Tentang Kami", href: "#" },
-  { name: "Karir", href: "#" },
-  { name: "Blog", href: "#" },
-  { name: "Kebijakan Privasi", href: "#" },
-  { name: "Syarat & Ketentuan", href: "#" },
-]
-
-export function FooterUMKM() {
+export default function FooterUMKM() {
   return (
-    <footer className="bg-[#F4F4F5] pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand & Mission */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
-                <Rocket className="w-5 h-5 text-[#18181B]" />
+    <footer className="bg-zinc-50 border-t border-zinc-200 pt-20 pb-10 relative overflow-hidden">
+       {/* Background Decoration */}
+       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-200/20 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          
+          {/* Kolom 1: Brand */}
+          <div className="space-y-6">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="p-1.5 bg-orange-500 rounded-lg">
+                <Rocket className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-xl text-[#18181B]">Upgrade UMKM</span>
+              <span className="text-xl font-bold text-zinc-900">
+                UpgradeUMKM
+              </span>
             </Link>
-            <p className="text-[#18181B]/60 text-sm leading-relaxed mb-6">
-              Platform pembawa perubahan bagi UMKM di Indonesia. 
-              Kami berkomitmen untuk membantu setiap pelaku usaha naik kelas melalui teknologi AI dan pendampingan profesional.
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              Platform ekosistem digital no. 1 untuk membantu UMKM Indonesia naik kelas dengan teknologi AI dan pendampingan ahli.
             </p>
-            <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#FBC904] transition-colors group">
-                <Instagram className="w-5 h-5 text-[#18181B]/60 group-hover:text-[#18181B]" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#FBC904] transition-colors group">
-                <Youtube className="w-5 h-5 text-[#18181B]/60 group-hover:text-[#18181B]" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#FBC904] transition-colors group">
-                <Linkedin className="w-5 h-5 text-[#18181B]/60 group-hover:text-[#18181B]" />
-              </a>
+            <div className="flex gap-4">
+                <a href="#" className="p-2 bg-white border border-zinc-200 rounded-full hover:border-orange-500 hover:text-orange-500 transition-all"><Instagram className="w-4 h-4"/></a>
+                <a href="#" className="p-2 bg-white border border-zinc-200 rounded-full hover:border-orange-500 hover:text-orange-500 transition-all"><Linkedin className="w-4 h-4"/></a>
             </div>
           </div>
 
-          {/* Products */}
+          {/* Kolom 2: Produk */}
           <div>
-            <h3 className="font-bold text-[#18181B] mb-4">Produk</h3>
-            <ul className="space-y-3">
-              {products.map((product) => (
-                <li key={product.name}>
-                  <a href={product.href} className="text-[#18181B]/60 hover:text-[#18181B] transition-colors text-sm">
-                    {product.name}
-                  </a>
-                </li>
-              ))}
+            <h4 className="font-bold text-zinc-900 mb-6 text-sm uppercase tracking-wider">Produk</h4>
+            <ul className="space-y-4 text-sm text-zinc-500">
+              <li><Link href="/products/bizguide" className="hover:text-orange-600 transition-colors">BizGuide Pro</Link></li>
+              <li><Link href="/products/skillboost" className="hover:text-orange-600 transition-colors">SkillBoost Pro</Link></li>
+              <li><Link href="/products/biztrack" className="hover:text-orange-600 transition-colors">BizTrack Monitor</Link></li>
+              <li><Link href="/products/bizconnect" className="hover:text-orange-600 transition-colors">BizConnect Hub</Link></li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Kolom 3: Perusahaan */}
           <div>
-            <h3 className="font-bold text-[#18181B] mb-4">Perusahaan</h3>
-            <ul className="space-y-3">
-              {company.map((item) => (
-                <li key={item.name}>
-                  <a href={item.href} className="text-[#18181B]/60 hover:text-[#18181B] transition-colors text-sm">
-                    {item.name}
-                  </a>
-                </li>
-              ))}
+            <h4 className="font-bold text-zinc-900 mb-6 text-sm uppercase tracking-wider">Perusahaan</h4>
+            <ul className="space-y-4 text-sm text-zinc-500">
+              <li><Link href="/about" className="hover:text-orange-600 transition-colors">Tentang Kami</Link></li>
+              <li><Link href="/events" className="hover:text-orange-600 transition-colors">Event</Link></li>
+              <li><Link href="/articles" className="hover:text-orange-600 transition-colors">Blog / Artikel</Link></li>
+              <li><Link href="/privacy" className="hover:text-orange-600 transition-colors">Kebijakan Privasi</Link></li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Kolom 4: Kontak */}
           <div>
-            <h3 className="font-bold text-[#18181B] mb-4">Kontak</h3>
-            <ul className="space-y-4">
+            <h4 className="font-bold text-zinc-900 mb-6 text-sm uppercase tracking-wider">Hubungi Kami</h4>
+            <ul className="space-y-4 text-sm text-zinc-500">
               <li className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-[#FBC904] flex-shrink-0 mt-0.5" />
-                <a href="mailto:marketing@upgradeumkm.id" className="text-[#18181B]/60 hover:text-[#18181B] transition-colors text-sm">
-                  marketing@upgradeumkm.id
-                </a>
+                <MapPin className="w-5 h-5 text-orange-500 shrink-0" />
+                <span>Gedung Science Technopark ITS, Kota Surabaya 60117</span>
               </li>
-              <li className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-[#FBC904] flex-shrink-0 mt-0.5" />
-                <a href="tel:+6289505670305" className="text-[#18181B]/60 hover:text-[#18181B] transition-colors text-sm">
-                  +62 895 0567 0305
-                </a>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-orange-500 shrink-0" />
+                <a href="mailto:marketing@upgradeumkm.id" className="hover:text-orange-600">marketing@upgradeumkm.id</a>
               </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-[#FBC904] flex-shrink-0 mt-0.5" />
-                <span className="text-[#18181B]/60 text-sm">
-                  Gedung Science Technopark ITS<br />
-                  Surabaya, Indonesia
-                </span>
+              <li className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-orange-500 shrink-0" />
+                <a href="https://wa.me/6289505670305" className="hover:text-orange-600">+62 895 0567 0305</a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-200 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-[#18181B]/60 text-sm">
-              © {new Date().getFullYear()} PT Digital Nusantara Innovations. All rights reserved.
-            </p>
-            <div className="flex items-center gap-2">
-              <span className="text-[#18181B]/40 text-sm">Powered by</span>
-              <span className="gradient-text font-semibold text-sm">Upgrade UMKM</span>
-            </div>
+        <div className="border-t border-zinc-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-400">
+          <p>&copy; {new Date().getFullYear()} PT Digital Nusantara Innovations. All rights reserved.</p>
+          <div className="flex gap-6">
+             <Link href="#" className="hover:text-zinc-600">Terms</Link>
+             <Link href="#" className="hover:text-zinc-600">Privacy</Link>
+             <Link href="#" className="hover:text-zinc-600">Cookies</Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

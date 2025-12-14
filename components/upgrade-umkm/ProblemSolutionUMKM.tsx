@@ -39,7 +39,7 @@ const solutions = [
   }
 ]
 
-export function ProblemSolutionUMKM() {
+export default function ProblemSolutionUMKM() {
   return (
     <section className="py-20 lg:py-32 bg-white" id="solutions">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
