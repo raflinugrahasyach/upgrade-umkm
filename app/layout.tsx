@@ -1,29 +1,20 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Suspense } from "react"
 import "./globals.css"
-import { PageTransition } from "@/components/page-transition"
-import { NavigationTransition } from "@/components/navigation-transition"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Dancing_Script, Caveat } from "next/font/google"
+import { Plus_Jakarta_Sans } from "next/font/google"
 
-const dancingScript = Dancing_Script({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-dancing-script",
+  variable: "--font-plus-jakarta",
   display: "swap",
-})
-
-const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-caveat",
-  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
 })
 
 export const metadata: Metadata = {
-  title: "Cliste - AI Automation for Enterprise",
+  title: "Upgrade UMKM - Platform AI untuk Pengembangan Usaha",
   description:
-    "Transform your business with intelligent AI automation solutions. Empower your organization to operate at the speed of thought.",
-  generator: "v0.app",
+    "Platform berbasis Artificial Intelligence untuk analisis pasar, kelola stok, dan pendampingan bisnis otomatis untuk UMKM Indonesia.",
+  keywords: ["UMKM", "AI", "Bisnis", "Indonesia", "Analisis", "Pendampingan"],
 }
 
 export default function RootLayout({
@@ -32,13 +23,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`font-sans antialiased ${dancingScript.variable} ${caveat.variable}`}>
-        <Suspense fallback={null}>
-          <NavigationTransition />
-          <PageTransition>{children}</PageTransition>
-        </Suspense>
-        <SpeedInsights />
+    <html lang="id">
+      <body className={`${plusJakarta.variable} font-sans antialiased`}>
+        {children}
       </body>
     </html>
   )
