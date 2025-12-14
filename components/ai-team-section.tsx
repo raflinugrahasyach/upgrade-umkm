@@ -331,7 +331,7 @@ export function AITeamSection() {
                                     : "bg-white text-slate-800 shadow-sm border border-slate-200 rounded-bl-md"
                                 }`}
                               >
-                                {message.text.split("\n").map((line, i) => (
+                                {message.text.split("\n").map((line: string, i: number) => (
                                   <div key={i}>{line}</div>
                                 ))}
                               </div>
