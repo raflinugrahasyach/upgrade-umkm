@@ -27,8 +27,10 @@ export default function Login() {
 
       if (error) throw error;
 
-      router.refresh(); // 1. Refresh data server component dulu
-      window.location.href = "/member/dashboard"; 
+      router.refresh(); 
+      
+      // 2. Pindah halaman dengan replace (agar tidak bisa di-back)
+      router.replace("/member/dashboard");
       
     } catch (err: any) {
       setError(err.message || "Gagal masuk. Periksa email dan password.");
