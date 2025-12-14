@@ -1,29 +1,29 @@
 import NavbarUMKM from "@/components/upgrade-umkm/NavbarUMKM";
 import HeroUMKM from "@/components/upgrade-umkm/HeroUMKM";
+import HomeChatDemo from "@/components/upgrade-umkm/HomeChatDemo"; // Import Baru
 import FeaturesUMKM from "@/components/upgrade-umkm/FeaturesUMKM";
 import ProblemSolutionUMKM from "@/components/upgrade-umkm/ProblemSolutionUMKM";
 import TestimonialsUMKM from "@/components/upgrade-umkm/TestimonialsUMKM";
 import TeamUMKM from "@/components/upgrade-umkm/TeamUMKM";
 import FooterUMKM from "@/components/upgrade-umkm/FooterUMKM";
 
-// HAPUS import DashboardPreviewSection
-
 export default function Home() {
   return (
     <main className="bg-white min-h-screen relative selection:bg-orange-100 selection:text-orange-900">
-      
-      {/* 1. Navbar */}
       <NavbarUMKM />
       
-      {/* 2. Hero Section (Yang visual kanannya sudah diperbaiki jadi Chart Animasi) */}
+      {/* 1. Hero */}
       <HeroUMKM />
+      
+      {/* 2. CHAT DEMO (NEW SECTION) - Lead Magnet */}
+      <HomeChatDemo />
       
       {/* 3. Masalah vs Solusi */}
       <div id="solution">
         <ProblemSolutionUMKM />
       </div>
       
-      {/* 4. Fitur Produk (Versi Bento Grid yang Benar) */}
+      {/* 4. Fitur Produk (Bento Grid) */}
       <div id="features">
         <FeaturesUMKM />
       </div>
@@ -36,7 +36,6 @@ export default function Home() {
       
       {/* 7. Footer */}
       <FooterUMKM />
-      
     </main>
   );
 }

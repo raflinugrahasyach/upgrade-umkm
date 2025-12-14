@@ -6,7 +6,7 @@ import { ArrowRight, Play, TrendingUp, Bot, Users, BarChart3 } from "lucide-reac
 import AuroraUMKM from "./AuroraUMKM"
 import Link from "next/link"
 
-const rotatingTexts = ["Omzet", "Skill Bisnis", "Jaringan", "Pengembangan Usaha"]
+const rotatingTexts = ["Omzet", "Skill Bisnis", "Jaringan", "Usaha"]
 
 export default function HeroUMKM() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -41,22 +41,22 @@ export default function HeroUMKM() {
               <span className="text-[#18181B]">Platform AI untuk UMKM Indonesia</span>
             </motion.div>
 
-            {/* Headline Dinamis (Teks "Anda" akan naik turun otomatis) */}
+            {/* Headline Dinamis */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#18181B] leading-[1.1] mb-6">
               1 Platform untuk{" "}
               <br className="hidden sm:block" />
               Meningkatkan{" "}
               
-              {/* ROTATING TEXT WRAPPER - Tanpa Absolute agar Layout Geser */}
-              <div className="block my-1"> 
-                <AnimatePresence mode="wait">
+              {/* ROTATING TEXT WRAPPER - FIXED HEIGHT AGAR TIDAK GESER */}
+              <div className="relative h-[1.3em] w-full my-1 overflow-hidden"> 
+                <AnimatePresence mode="popLayout">
                   <motion.div
                     key={currentIndex}
-                    initial={{ y: 20, opacity: 0, height: 0 }}
-                    animate={{ y: 0, opacity: 1, height: "auto" }}
-                    exit={{ y: -20, opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="gradient-text inline-block leading-tight pb-2"
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="absolute inset-0 gradient-text leading-tight pb-2"
                   >
                     {rotatingTexts[currentIndex]}
                   </motion.div>
