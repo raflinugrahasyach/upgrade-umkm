@@ -3,7 +3,6 @@
 import { motion } from "framer-motion"
 import { Linkedin, Twitter } from "lucide-react"
 
-// Data Team (Color dihapus agar seragam & profesional)
 const team = [
   {
     name: "Dzakki Damar",
@@ -44,7 +43,7 @@ const team = [
 
 export default function TeamUMKM() {
   return (
-    <section className="py-24 bg-white border-t border-zinc-100">
+    <section className="py-24 bg-[#FAFAFA] border-t border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -53,21 +52,19 @@ export default function TeamUMKM() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
-          <div className="inline-block mb-3 px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-xs font-bold tracking-widest uppercase">
-            Our Minds
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 mb-6 tracking-tight">
-            Meet the <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-yellow-500">Leadership</span>
+          <span className="text-orange-600 font-bold tracking-wider text-xs uppercase mb-2 block">Our Leadership</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 mb-6">
+            Meet the <span className="text-orange-500">Team</span>
           </h2>
-          <p className="text-lg text-zinc-500 max-w-2xl mx-auto leading-relaxed">
-            Para profesional di balik layar yang berdedikasi membangun ekosistem digital untuk kemajuan UMKM Indonesia.
+          <p className="text-lg text-zinc-500 max-w-2xl mx-auto">
+            Para profesional di balik layar yang berdedikasi membangun ekosistem digital UMKM.
           </p>
         </motion.div>
 
-        {/* Team Grid (Flexbox untuk Layout Piramida 3-2) */}
-        <div className="flex flex-wrap justify-center gap-8 lg:gap-10">
+        {/* Team Grid (Flexbox Center untuk Layout 3-2) */}
+        <div className="flex flex-wrap justify-center gap-6 lg:gap-8">
           {team.map((member, index) => (
             <motion.div 
               key={member.name}
@@ -75,64 +72,58 @@ export default function TeamUMKM() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group w-full sm:w-[calc(50%-2rem)] lg:w-[calc(30%-2rem)] max-w-[320px]"
+              className="group w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(30%-1.5rem)] max-w-[300px]"
             >
-              <div className="bg-white rounded-[2rem] p-8 text-center border border-zinc-100 shadow-sm hover:shadow-2xl hover:border-orange-100 transition-all duration-500 relative overflow-hidden h-full">
+              <div className="bg-white rounded-[24px] p-8 text-center border border-zinc-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 h-full flex flex-col items-center">
                 
-                {/* Background Decor (Hover Effect) */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"/>
-
-                {/* Avatar Image */}
-                <div className="relative w-28 h-28 mx-auto mb-6">
-                   {/* Ring Border Uniform (Gold/Orange) */}
-                   <div className="absolute inset-0 rounded-full border-2 border-dashed border-zinc-200 group-hover:border-orange-400 group-hover:rotate-180 transition-all duration-700"/>
+                {/* Avatar Image - Simple & Clean */}
+                <div className="w-28 h-28 mb-6 relative">
+                   {/* Circle Background Accent */}
+                   <div className="absolute inset-0 bg-orange-50 rounded-full scale-110 group-hover:scale-125 transition-transform duration-500"/>
                    
-                   <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg relative z-10">
+                   {/* Image */}
+                   <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-sm">
                      <img 
                         src={member.image} 
                         alt={member.name} 
-                        className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110"
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                      />
                    </div>
                 </div>
                 
                 {/* Name */}
-                <h3 className="font-bold text-zinc-900 mb-1 text-xl tracking-tight group-hover:text-orange-600 transition-colors">
+                <h3 className="font-bold text-zinc-900 text-lg mb-1">
                     {member.name}
                 </h3>
                 
-                {/* Role - Elegant Swap */}
-                <div className="relative h-12 overflow-hidden w-full mt-2">
-                  {/* Default State: Short Role */}
-                  <div className="absolute inset-0 flex items-center justify-center transition-all duration-500 group-hover:-translate-y-10 group-hover:opacity-0">
-                    <span className="inline-block px-3 py-1 bg-zinc-50 text-zinc-600 text-sm font-semibold rounded-lg">
-                        {member.role}
-                    </span>
-                  </div>
-                  
-                  {/* Hover State: Full Role */}
-                  <div className="absolute inset-0 flex items-center justify-center transition-all duration-500 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-                    <span className="text-xs font-bold text-orange-600 uppercase tracking-wider">
-                        {member.fullRole}
-                    </span>
-                  </div>
-                </div>
+                {/* Role */}
+                <p className="text-sm font-medium text-orange-600 mb-4">
+                    {member.role}
+                </p>
 
-                {/* Social Links - Minimalist */}
-                <div className="flex justify-center gap-4 mt-6 pt-6 border-t border-zinc-50">
+                {/* Divider Kecil */}
+                <div className="w-8 h-1 bg-zinc-100 rounded-full mb-4 mx-auto group-hover:bg-orange-200 transition-colors"/>
+                
+                {/* Full Role Description */}
+                <p className="text-xs text-zinc-500 font-medium mb-6">
+                    {member.fullRole}
+                </p>
+
+                {/* Social Links - Simple Icons */}
+                <div className="mt-auto flex justify-center gap-4">
                   <a 
                     href={member.linkedin} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="text-zinc-400 hover:text-[#0077b5] hover:scale-110 transition-all duration-300"
+                    className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-50 text-zinc-400 hover:bg-[#0077b5] hover:text-white transition-all duration-300"
                   >
-                    <Linkedin className="w-5 h-5" />
+                    <Linkedin className="w-4 h-4" />
                   </a>
                   <a 
                     href="#" 
-                    className="text-zinc-400 hover:text-black hover:scale-110 transition-all duration-300"
+                    className="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-50 text-zinc-400 hover:bg-black hover:text-white transition-all duration-300"
                   >
-                    <Twitter className="w-5 h-5" />
+                    <Twitter className="w-4 h-4" />
                   </a>
                 </div>
 
